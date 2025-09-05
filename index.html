@@ -21,7 +21,7 @@
     text-align: center;
   }
   .popup {
-    display: none;
+    display: none; /* Skrytý dokud se nespustí */
     position: fixed;
     top:0; left:0; right:0; bottom:0;
     background: rgba(0,0,0,0.95);
@@ -60,6 +60,7 @@
 <script>
 const logDiv = document.getElementById('log');
 const alertDiv = document.getElementById('alert');
+const popup = document.getElementById('popup');
 
 // Funkce pro generování náhodného hex ID
 function randomHex(len) {
@@ -91,4 +92,34 @@ for(let msg of baseMessages){
   if(Math.random() > 0.5){
     messages.push("ID: " + randomHex(6) + "-" + randomHex(4));
   }
-  if(Math.random() > 0.
+  if(Math.random() > 0.6){
+    messages.push("Port " + Math.floor(Math.random()*65535) + " kontrolován...");
+  }
+}
+
+let i = 0;
+
+function showNextMessage() {
+  if(i < messages.length){
+    logDiv.textContent += messages[i] + "\n";
+    i++;
+    setTimeout(showNextMessage, 400 + Math.random()*400); // náhodný delay
+  } else {
+    // Po dokončení logu zobrazíme červený nápis
+    alertDiv.textContent = "YOU'VE BEEN HACKED!";
+    // Až po 2,5 sekundách spustíme popup
+    setTimeout(() => {
+      popup.style.display = 'flex';
+    }, 2500);
+  }
+}
+
+function closePopup(){
+  popup.style.display = 'none';
+  alertDiv.textContent = "";
+}
+
+document.addEventListener("DOMContentLoaded", showNextMessage);
+</script>
+</body>
+</html>
