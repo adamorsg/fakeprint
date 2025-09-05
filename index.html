@@ -2,127 +2,83 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Hacker Simulation</title>
+<title>Malware Virus</title>
 <style>
-  html, body {
+  body {
     margin: 0;
-    padding: 0;
-    overflow: hidden;
     background: black;
-    color: lime;
+    color: #00FF00;
     font-family: monospace;
+    font-size: 14px;
+    padding: 10px;
+    white-space: pre-wrap;
   }
-
-  #matrixCanvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-    z-index: 1;
-  }
-
   .popup {
     display: none;
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top:0; left:0; right:0; bottom:0;
     background: rgba(0,0,0,0.95);
+    color: #00FF00;
+    display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10;
-    flex-direction: column;
-  }
-
-  .popup-content {
-    background: black;
-    color: lime;
-    padding: 20px;
-    border: 2px solid red;
-    border-radius: 10px;
     text-align: center;
-    width: 450px;
-    max-width: 90%;
+    font-family: monospace;
   }
-
-  .popup-content h2 { color: red; margin: 0 0 10px 0; }
-  .popup-content p { font-size: 12px; color: gray; }
-  .popup-content button { margin-top: 10px; padding: 5px 10px; font-size: 14px; }
+  .popup button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    font-family: monospace;
+    background: black;
+    color: #00FF00;
+    border: 1px solid #00FF00;
+  }
 </style>
 </head>
 <body>
-<canvas id="matrixCanvas"></canvas>
+<div id="log"></div>
 
-<!-- Popup 1: SYSTEM ALERT -->
-<div id="popup1" class="popup">
-  <div class="popup-content">
-    <h2>⚠ SYSTEM ALERT!</h2>
-    <p>Unauthorized access detected!</p>
-    <button onclick="closeFirstPopup()">OK</button>
-  </div>
-</div>
-
-<!-- Popup 2: explanation -->
-<div id="popup2" class="popup">
-  <div class="popup-content">
-    <h2>ℹ WARNING</h2>
-    <p>This was only a simulation! No real harm occurred.<br>Be careful with suspicious links and files.</p>
-    <button onclick="closeSecondPopup()">Understood</button>
+<div id="popup" class="popup">
+  <div>
+    <p>⚠ POZOR: Tohle byla jen simulace! Nic se ve skutečnosti nestalo.<br>
+       Dávej si pozor na podezřelé odkazy a soubory!</p>
+    <button onclick="closePopup()">OK</button>
   </div>
 </div>
 
 <script>
-/* MATRIX EFFECT */
-const canvas = document.getElementById('matrixCanvas');
-const ctx = canvas.getContext('2d');
-let width = canvas.width = window.innerWidth;
-let height = canvas.height = window.innerHeight;
+const logDiv = document.getElementById('log');
+const messages = [
+  "Initializing system scan...",
+  "Checking user permissions...",
+  "Access denied on attempt 1",
+  "Access denied on attempt 2",
+  "Logging unauthorized access...",
+  "Generating random IDs...",
+  "ID: " + Math.floor(Math.random()*1000000),
+  "ID: " + Math.floor(Math.random()*1000000),
+  "Scan complete. System secure."
+];
 
-const cols = Math.floor(width / 20) + 1;
-const yPos = Array(cols).fill(0);
+let i = 0;
 
-function matrixStep() {
-  ctx.fillStyle = 'rgba(0,0,0,0.05)';
-  ctx.fillRect(0, 0, width, height);
-  
-  ctx.fillStyle = '#0F0';
-  ctx.font = '15pt monospace';
-
-  for (let i = 0; i < yPos.length; i++) {
-    const text = randomChar();
-    ctx.fillText(text, i * 20, yPos[i] * 20);
-    if (yPos[i] * 20 > height && Math.random() > 0.975) yPos[i] = 0;
-    yPos[i]++;
+function showNextMessage() {
+  if(i < messages.length){
+    logDiv.textContent += messages[i] + "\n";
+    i++;
+    setTimeout(showNextMessage, 800);
+  } else {
+    // po dokončení logu zobrazíme popup
+    document.getElementById('popup').style.display = 'flex';
   }
 }
 
-function randomChar() {
-  const chars = '0123456789ABCDEF ERROR ACCESS DENIED SYSTEM FAILURE !!! WARNING';
-  return chars.charAt(Math.floor(Math.random() * chars.length));
+function closePopup(){
+  document.getElementById('popup').style.display = 'none';
 }
 
-setInterval(matrixStep, 50);
-
-/* POPUPS */
-function closeFirstPopup() {
-  document.getElementById('popup1').style.display = 'none';
-  document.getElementById('popup2').style.display = 'flex';
-}
-
-function closeSecondPopup() {
-  document.getElementById('popup2').style.display = 'none';
-}
-
-/* SHOW FIRST POPUP ON LOAD */
-window.onload = () => {
-  document.getElementById('popup1').style.display = 'flex';
-};
-
-/* RESIZE CANVAS ON WINDOW CHANGE */
-window.onresize = () => {
-  width = canvas.width = window.innerWidth;
-  height = canvas.height = window.innerHeight;
-};
+window.onload = showNextMessage;
 </script>
 </body>
 </html>
