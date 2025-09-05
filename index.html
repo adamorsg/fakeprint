@@ -2,55 +2,120 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
-  <title>Fake Print</title>
+  <title>Fake Hack</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: monospace;
+      background: black;
+      color: lime;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
     }
-    #popup {
+    .popup {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.9);
       justify-content: center;
       align-items: center;
+      z-index: 9999;
+      flex-direction: column;
     }
-    #popup-content {
-      background: white;
+    .popup-content {
+      background: black;
+      color: lime;
       padding: 20px;
+      border: 2px solid red;
       border-radius: 10px;
       text-align: center;
-      width: 300px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      width: 400px;
+      max-width: 90%;
     }
-    #popup-content h2 {
+    .popup-content h2 {
       margin: 0 0 10px 0;
       color: red;
     }
-    #popup-content p {
+    .popup-content p {
       font-size: 12px;
       color: gray;
+    }
+    #console {
+      margin-top: 10px;
+      height: 200px;
+      overflow-y: auto;
+      background: black;
+      border: 1px solid lime;
+      padding: 5px;
+      font-size: 14px;
+      text-align: left;
+    }
+    button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <a href="#" onclick="showPopup()">Tisk</a>
 
-  <div id="popup">
-    <div id="popup-content">
-      <h2>⚠ Váš počítač byl hacknut</h2>
-      <p>(nebyl, ale dávej si pozor na co klikáš)</p>
-      <button onclick="closePopup()">OK</button>
-    </div>
+<!-- První popup: hack -->
+<div id="popup1" class="popup">
+  <div class="popup-content">
+    <h2>⚠ Váš počítač byl hacknut</h2>
+    <p>(nebyl, ale dávej si pozor na co klikáš)</p>
+    <div id="console"></div>
+    <button onclick="closeFirstPopup()">OK</button>
   </div>
+</div>
 
-  <script>
-    function showPopup() {
-      document.getElementById("popup").style.display = "flex";
+<!-- Druhý popup: vysvětlení -->
+<div id="popup2" class="popup">
+  <div class="popup-content">
+    <h2>ℹ Pozor</h2>
+    <p>Tohle byla jen simulace! Nic se ve skutečnosti nestalo.<br>
+       Dávej si pozor na podezřelé odkazy a soubory.</p>
+    <button onclick="closeSecondPopup()">Rozumím</button>
+  </div>
+</div>
+
+<script>
+  const consoleDiv = document.getElementById('console');
+  let interval;
+
+  function randomLine() {
+    const chars = '0123456789ABCDEF';
+    let line = '';
+    for (let i = 0; i < 50; i++) {
+      line += chars[Math.floor(Math.random() * chars.length)];
     }
-    function closePopup() {
-      document.getElementById("popup").style.display = "none";
-    }
-  </script>
+    return line;
+  }
+
+  function updateConsole() {
+    const p = document.createElement('p');
+    p.textContent = randomLine();
+    consoleDiv.appendChild(p);
+    consoleDiv.scrollTop = consoleDiv.scrollHeight;
+  }
+
+  function closeFirstPopup() {
+    clearInterval(interval);
+    document.getElementById('popup1').style.display = 'none';
+    // Otevře druhý popup
+    document.getElementById('popup2').style.display = 'flex';
+  }
+
+  function closeSecondPopup() {
+    document.getElementById('popup2').style.display = 'none';
+  }
+
+  // Popup se otevře hned po načtení
+  window.onload = () => {
+    document.getElementById('popup1').style.display = 'flex';
+    interval = setInterval(updateConsole, 50);
+  }
+</script>
+
 </body>
 </html>
