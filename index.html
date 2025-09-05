@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Malware Virus</title>
+<title>Malware Simulation</title>
 <style>
   body {
     margin: 0;
@@ -18,47 +18,56 @@
     position: fixed;
     top:0; left:0; right:0; bottom:0;
     background: rgba(0,0,0,0.95);
-    color: #00FF00;
+    color: #FF0000;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10;
     text-align: center;
     font-family: monospace;
+    flex-direction: column;
   }
   .popup button {
     margin-top: 10px;
     padding: 5px 10px;
     font-family: monospace;
     background: black;
-    color: #00FF00;
-    border: 1px solid #00FF00;
+    color: #FF0000;
+    border: 1px solid #FF0000;
+  }
+  #alert {
+    font-size: 24px;
+    color: red;
+    font-weight: bold;
+    margin-top: 20px;
   }
 </style>
 </head>
 <body>
 <div id="log"></div>
+<div id="alert"></div>
 
 <div id="popup" class="popup">
   <div>
-    <p>⚠ POZOR: Tohle byla jen simulace! Nic se ve skutečnosti nestalo.<br>
-       Dávej si pozor na podezřelé odkazy a soubory!</p>
+    <p>⚠ ALERT: This was just a simulation. No real harm occurred.<br>
+    Be cautious with suspicious links and files!</p>
     <button onclick="closePopup()">OK</button>
   </div>
 </div>
 
 <script>
 const logDiv = document.getElementById('log');
+const alertDiv = document.getElementById('alert');
+
 const messages = [
   "Initializing system scan...",
   "Checking user permissions...",
-  "Access denied on attempt 1",
-  "Access denied on attempt 2",
-  "Logging unauthorized access...",
-  "Generating random IDs...",
+  "Unauthorized access detected...",
+  "Generating random malware IDs...",
   "ID: " + Math.floor(Math.random()*1000000),
   "ID: " + Math.floor(Math.random()*1000000),
-  "Scan complete. System secure."
+  "Access escalation failed...",
+  "System lockdown triggered..."
 ];
 
 let i = 0;
@@ -69,13 +78,17 @@ function showNextMessage() {
     i++;
     setTimeout(showNextMessage, 800);
   } else {
-    // po dokončení logu zobrazíme popup
-    document.getElementById('popup').style.display = 'flex';
+    alertDiv.textContent = "YOU'VE BEEN HACKED!";
+    // po 3 sekundách zobraz popup s vysvětlením
+    setTimeout(() => {
+      document.getElementById('popup').style.display = 'flex';
+    }, 3000);
   }
 }
 
 function closePopup(){
   document.getElementById('popup').style.display = 'none';
+  alertDiv.textContent = "";
 }
 
 window.onload = showNextMessage;
