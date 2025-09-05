@@ -2,14 +2,55 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
-  <title>Tisk</title>
-  <script>
-    alert("Váš počítač byl hacknut");
-  </script>
+  <title>Fake Print</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+    #popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      width: 300px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    #popup-content h2 {
+      margin: 0 0 10px 0;
+      color: red;
+    }
+    #popup-content p {
+      font-size: 12px;
+      color: gray;
+    }
+  </style>
 </head>
 <body>
-  <p style="font-size:12px; color:gray;">
-    nebyl, ale dávej si pozor na co klikáš
-  </p>
+  <a href="#" onclick="showPopup()">Tisk</a>
+
+  <div id="popup">
+    <div id="popup-content">
+      <h2>⚠ Váš počítač byl hacknut</h2>
+      <p>(nebyl, ale dávej si pozor na co klikáš)</p>
+      <button onclick="closePopup()">OK</button>
+    </div>
+  </div>
+
+  <script>
+    function showPopup() {
+      document.getElementById("popup").style.display = "flex";
+    }
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
+    }
+  </script>
 </body>
 </html>
