@@ -14,10 +14,11 @@
     white-space: pre-wrap;
   }
   #alert {
-    font-size: 24px;
+    font-size: 28px;
     color: red;
     font-weight: bold;
     margin-top: 20px;
+    text-align: center;
   }
   .popup {
     display: none;
@@ -40,6 +41,7 @@
     background: black;
     color: #fff;
     border: 1px solid #fff;
+    cursor: pointer;
   }
 </style>
 </head>
@@ -59,16 +61,40 @@
 const logDiv = document.getElementById('log');
 const alertDiv = document.getElementById('alert');
 
-const messages = [
+// Funkce pro generování náhodného hex ID
+function randomHex(len) {
+  let s = '';
+  const chars = '0123456789ABCDEF';
+  for(let i=0; i<len; i++){
+    s += chars[Math.floor(Math.random()*16)];
+  }
+  return s;
+}
+
+// Simulované logy
+const baseMessages = [
   "Initializing system scan...",
   "Checking user permissions...",
   "Unauthorized access detected...",
-  "Generating random malware IDs...",
-  "ID: " + Math.floor(Math.random()*1000000),
-  "ID: " + Math.floor(Math.random()*1000000),
-  "Access escalation failed...",
+  "Generating malware IDs...",
+  "Access escalation attempt...",
+  "Firewall bypass initiated...",
+  "Scanning open ports...",
+  "Injecting payload...",
   "System lockdown triggered..."
 ];
+
+// Přidáme náhodná data do logů
+let messages = [];
+for(let msg of baseMessages){
+  messages.push(msg);
+  if(Math.random() > 0.5){
+    messages.push("ID: " + randomHex(6) + "-" + randomHex(4));
+  }
+  if(Math.random() > 0.6){
+    messages.push("Port " + Math.floor(Math.random()*65535) + " scanned...");
+  }
+}
 
 let i = 0;
 
@@ -76,16 +102,24 @@ function showNextMessage() {
   if(i < messages.length){
     logDiv.textContent += messages[i] + "\n";
     i++;
-    setTimeout(showNextMessage, 800);
+    setTimeout(showNextMessage, 400 + Math.random()*400); // náhodný delay pro realističtější efekt
   } else {
     // Po dokončení logu zobrazíme červený nápis
     alertDiv.textContent = "YOU'VE BEEN HACKED!";
-    // Po 3 sekundách zobrazíme popup s vysvětlením
+    // Po 2.5 sekundách zobrazíme popup s vysvětlením
     setTimeout(() => {
       document.getElementById('popup').style.display = 'flex';
-    }, 3000);
+    }, 2500);
   }
 }
 
 function closePopup(){
-  document.getElementBy
+  document.getElementById('popup').style.display = 'none';
+  alertDiv.textContent = "";
+}
+
+// Spuštění simulace po načtení stránky
+document.addEventListener("DOMContentLoaded", showNextMessage);
+</script>
+</body>
+</html>
