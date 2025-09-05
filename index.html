@@ -7,18 +7,24 @@
   body {
     margin: 0;
     background: black;
-    color: #00FF00;
+    color: #ccc;
     font-family: monospace;
     font-size: 14px;
     padding: 10px;
     white-space: pre-wrap;
+  }
+  #alert {
+    font-size: 24px;
+    color: red;
+    font-weight: bold;
+    margin-top: 20px;
   }
   .popup {
     display: none;
     position: fixed;
     top:0; left:0; right:0; bottom:0;
     background: rgba(0,0,0,0.95);
-    color: #FF0000;
+    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,14 +38,8 @@
     padding: 5px 10px;
     font-family: monospace;
     background: black;
-    color: #FF0000;
-    border: 1px solid #FF0000;
-  }
-  #alert {
-    font-size: 24px;
-    color: red;
-    font-weight: bold;
-    margin-top: 20px;
+    color: #fff;
+    border: 1px solid #fff;
   }
 </style>
 </head>
@@ -78,8 +78,9 @@ function showNextMessage() {
     i++;
     setTimeout(showNextMessage, 800);
   } else {
+    // Po dokončení logu zobrazíme červený nápis
     alertDiv.textContent = "YOU'VE BEEN HACKED!";
-    // po 3 sekundách zobraz popup s vysvětlením
+    // Po 3 sekundách zobrazíme popup s vysvětlením
     setTimeout(() => {
       document.getElementById('popup').style.display = 'flex';
     }, 3000);
@@ -87,11 +88,4 @@ function showNextMessage() {
 }
 
 function closePopup(){
-  document.getElementById('popup').style.display = 'none';
-  alertDiv.textContent = "";
-}
-
-window.onload = showNextMessage;
-</script>
-</body>
-</html>
+  document.getElementBy
