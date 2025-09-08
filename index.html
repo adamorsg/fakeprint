@@ -21,7 +21,6 @@
     text-align: center;
   }
   .popup {
-    display: none; /* Skrytý dokud se nespustí */
     position: fixed;
     top:0; left:0; right:0; bottom:0;
     background: rgba(0,0,0,0.95);
@@ -49,18 +48,9 @@
 <div id="log"></div>
 <div id="alert"></div>
 
-<div id="popup" class="popup">
-  <div>
-    <p>⚠ UPOZORNĚNÍ: Toto byla pouze simulace. Nebyla provedena žádná škodlivá akce.<br>
-    Dávej pozor na podezřelé odkazy a soubory!</p>
-    <button onclick="closePopup()">OK</button>
-  </div>
-</div>
-
 <script>
 const logDiv = document.getElementById('log');
 const alertDiv = document.getElementById('alert');
-const popup = document.getElementById('popup');
 
 // Funkce pro generování náhodného hex ID
 function randomHex(len) {
@@ -103,20 +93,30 @@ function showNextMessage() {
   if(i < messages.length){
     logDiv.textContent += messages[i] + "\n";
     i++;
-    setTimeout(showNextMessage, 400 + Math.random()*400); // náhodný delay
+    setTimeout(showNextMessage, 400 + Math.random()*400);
   } else {
     // Po dokončení logu zobrazíme červený nápis
     alertDiv.textContent = "YOU'VE BEEN HACKED!";
-    // Až po 2,5 sekundách spustíme popup
-    setTimeout(() => {
-      popup.style.display = 'flex';
-    }, 2500);
+    // Teprve teď vytvoříme a zobrazíme popup
+    setTimeout(showPopup, 2500);
   }
 }
 
-function closePopup(){
-  popup.style.display = 'none';
-  alertDiv.textContent = "";
+function showPopup(){
+  const popup = document.createElement('div');
+  popup.className = 'popup';
+  popup.innerHTML = `
+    <div>
+      <p>⚠ UPOZORNĚNÍ: Toto byla pouze simulace. Nebyla provedena žádná škodlivá akce.<br>
+      Dávej pozor na podezřelé odkazy a soubory!</p>
+      <button id="closeBtn">OK</button>
+    </div>
+  `;
+  document.body.appendChild(popup);
+  document.getElementById('closeBtn').onclick = () => {
+    popup.remove();
+    alertDiv.textContent = "";
+  }
 }
 
 document.addEventListener("DOMContentLoaded", showNextMessage);
